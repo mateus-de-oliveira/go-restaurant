@@ -1,34 +1,35 @@
-import { Component } from 'react';
+import {useState, useEffect, useRef} from 'react'
 import ReactModal from 'react-modal';
 
-class Modal extends Component {
-  constructor(props) {
-    super(props);
+interface ModalProps {
+  isOpen: boolean,
+  setIsOpen: () => void,
+  children: React.ReactNode
+}
 
-    const { isOpen } = this.props;
-    this.state = {
-      modalStatus: isOpen
-    }
-  }
+export function Modal({isOpen, setIsOpen, children}:ModalProps) {
+  // constructor(props) {
+  //   super(props);
 
-  componentDidUpdate(prevProps) {
-    const { isOpen } = this.props;
+  //   const { isOpen } = this.props;
+  //   this.state = {
+  //     modalStatus: isOpen
+  //   }
+  // }
 
-    if (prevProps.isOpen !== isOpen) {
-      console.log(this.props)
-      this.setState({ modalStatus: isOpen })
-    }
-  }
+  const [isModalStatus, setIsModalStatus] = useState(isOpen)
 
-  render() {
-    const { children, setIsOpen } = this.props;
-    const { modalStatus } = this.state;
+
+  useEffect(() =>{
+      setIsModalStatus(isOpen)
+  }, [isOpen])
+    // const { children, setIsOpen } = this.props;
 
     return (
       <ReactModal
         shouldCloseOnOverlayClick={!false}
         onRequestClose={setIsOpen}
-        isOpen={modalStatus}
+        isOpen={isModalStatus}
         ariaHideApp={false}
         style={{
           content: {
@@ -52,7 +53,7 @@ class Modal extends Component {
         {children}
       </ReactModal>
     );
-  }
+  
 };
 
-export default Modal;
+
